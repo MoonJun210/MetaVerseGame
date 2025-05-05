@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
-    public Transform target;
+    private Transform target;
     float offsetX;
     float offsetY;
 
-    void Start()
+    private void Awake()
     {
-        if (target == null)
-            return;
+        EventManager.Instance.RegisterEvent<GameObject>("InitCamera", InitCamera);
+    }
 
+    void InitCamera(GameObject player)
+    {
+        target = player.transform;
         offsetX = transform.position.x - target.position.x;
         offsetY = transform.position.y - target.position.y;
     }
@@ -27,4 +30,5 @@ public class FollowCamera : MonoBehaviour
         pos.y = target.position.y + offsetY;
         transform.position = pos;
     }
+
 }

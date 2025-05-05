@@ -1,10 +1,18 @@
+using System;
 using UnityEngine;
+
+public enum NPCType
+{
+    None = 0,
+    Shop = 1,
+    Inventory = 2,
+}
 
 public class BaseController : MonoBehaviour
 {
     protected Rigidbody2D _rigidbody;
 
-    [SerializeField] private SpriteRenderer characterRenderer;
+    [SerializeField] private SpriteRenderer[] characterRenderer;
     [SerializeField] private Transform weaponPivot;
 
     protected Vector2 movementDirection = Vector2.zero;
@@ -17,13 +25,30 @@ public class BaseController : MonoBehaviour
     private float knockbackDuration = 0.0f;
 
     protected AnimationHandler animationHandler;
+    protected StatController statController;
+
+    private int characterNum = 0;
+    public int CharNum { get { return characterNum; } }
 
 
     protected virtual void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         animationHandler = GetComponent<AnimationHandler>();
+        statController = GetComponent<StatController>();
 
+        characterNum = 0;
+
+        for(int i = 0; i< characterRenderer.Length; i++)
+        {
+            characterRenderer[i].gameObject.SetActive(i == characterNum);
+        }
+
+        if(characterRenderer.Length == 1) // Npc는 스프라이트 변경할일없음
+        {
+            return;
+        }
+        EventManager.Instance.RegisterEvent<int>("ChangeSprite",ChangeSprite);
     }
 
     protected virtual void Start()
@@ -34,7 +59,7 @@ public class BaseController : MonoBehaviour
     protected virtual void Update()
     {
         HandleAction();
-        Rotate(lookDirection);
+        Rotate(lookDirection, characterNum);
     }
 
     protected virtual void FixedUpdate()
@@ -53,7 +78,7 @@ public class BaseController : MonoBehaviour
 
     private void Movment(Vector2 direction)
     {
-        direction = direction * 5;
+        direction = direction * statController.Speed;
         if (knockbackDuration > 0.0f)
         {
             direction *= 0.2f;
@@ -61,16 +86,16 @@ public class BaseController : MonoBehaviour
         }
 
         _rigidbody.velocity = direction;
-        animationHandler.Move(direction);
+        animationHandler.Move(direction, characterNum);
 
     }
 
-    private void Rotate(Vector2 direction)
+    private void Rotate(Vector2 direction, int num)
     {
         float rotZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         bool isLeft = Mathf.Abs(rotZ) > 90f;
 
-        characterRenderer.flipX = isLeft;
+        characterRenderer[num].flipX = isLeft;
 
         if (weaponPivot != null)
         {
@@ -83,4 +108,20 @@ public class BaseController : MonoBehaviour
         knockbackDuration = duration;
         knockback = -(other.position - transform.position).normalized * power;
     }
+
+
+    public void ChangeSprite(int newNum)
+    {
+        if (newNum < 0 || newNum >= characterRenderer.Length || newNum == characterNum)
+        {
+            return;
+        }
+        characterRenderer[characterNum].gameObject.SetActive(false);
+        characterNum = newNum;
+        characterRenderer[characterNum].gameObject.SetActive(true);
+
+        Debug.Log("CharNum 변경! : " + CharNum);
+    }
+
+   
 }

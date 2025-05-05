@@ -7,25 +7,25 @@ public class AnimationHandler : MonoBehaviour
     private static readonly int IsMoving = Animator.StringToHash("IsMove");
     private static readonly int IsDamage = Animator.StringToHash("IsDamage");
 
-    protected Animator animator;
+    protected Animator[] animator;
 
     protected virtual void Awake()
     {
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponentsInChildren<Animator>(true);
     }
 
-    public void Move(Vector2 obj)
+    public void Move(Vector2 obj, int charNum)
     {
-        animator.SetBool(IsMoving, obj.magnitude > .5f);
+        animator[charNum].SetBool(IsMoving, obj.magnitude > .5f);
     }
 
-    public void Damage()
+    public void Damage(int charNum)
     {
-        animator.SetBool(IsDamage, true);
+        animator[charNum].SetBool(IsDamage, true);
     }
 
-    public void InvincibilityEnd()
+    public void InvincibilityEnd(int charNum)
     {
-        animator.SetBool(IsDamage, false);
+        animator[charNum].SetBool(IsDamage, false);
     }
 }
