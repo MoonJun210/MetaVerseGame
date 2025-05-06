@@ -5,8 +5,9 @@ using UnityEngine;
 public class StatController : MonoBehaviour
 {
     private int maxHp = 100;
-    private int gold = 50;
-    private float speed = 5f;
+    private int gold = 10000;
+    private float speed = 5.0f;
+    private float rideSpeed = 10f;
     public int MaxHp
     {
         get => maxHp;
@@ -21,6 +22,11 @@ public class StatController : MonoBehaviour
     {
         get => speed;
         set => speed = value;
+    }
+    public float RideSpeed
+    {
+        get => rideSpeed;
+        set => rideSpeed = value;
     }
 
 }

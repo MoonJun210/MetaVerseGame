@@ -3,43 +3,31 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class InventoryController : MonoBehaviour
+public class InventoryController : InitPlayer
 {
-    private BaseController baseController;
-    private StatController statController;
-
 
     public GameObject[] charImgs;
     public TextMeshProUGUI hpText;
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI goldText;
 
-    private void Awake()
+    protected override void Awake()
     {
-        EventManager.Instance.RegisterEvent<GameObject>("OnPlayerSpawned", OnPlayerSpawned);
+        base.Awake();
         EventManager.Instance.RegisterEvent("UpdateStat", UpdateStat);
-
     }
 
-    private void OnPlayerSpawned(GameObject playerObj)
-    {
-        baseController = playerObj.GetComponent<BaseController>();
-        statController = playerObj.GetComponent<StatController>();
-    }
 
     private void UpdateStat()
     {
         hpText.text = statController.MaxHp.ToString();
-        speedText.text = statController.Speed.ToString();
+        speedText.text = statController.Speed.ToString("F1");
         goldText.text = statController.Gold.ToString();
     }
 
     public void Plus_ChangeSprite()
     {
-        if(baseController == null)
-        {
-            Debug.Log("문제발생");
-        }
+       
         EventManager.Instance.TriggerEvent("ChangeSprite", baseController.CharNum + 1);
         ChangeCharImgs(baseController.CharNum);
     }

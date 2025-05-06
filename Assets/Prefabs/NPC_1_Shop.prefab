@@ -403,6 +403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterRenderer:
   - {fileID: 5127722170818063316}
+  rideRenderer: []
   weaponPivot: {fileID: 0}
   questionMark: {fileID: 6193594729885134404}
   npcType: 1

@@ -1,18 +1,15 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public enum NPCType
-{
-    None = 0,
-    Shop = 1,
-    Inventory = 2,
-}
 
 public class BaseController : MonoBehaviour
 {
     protected Rigidbody2D _rigidbody;
 
     [SerializeField] private SpriteRenderer[] characterRenderer;
+    [SerializeField] private SpriteRenderer[] rideRenderer;
+
     [SerializeField] private Transform weaponPivot;
 
     protected Vector2 movementDirection = Vector2.zero;
@@ -30,6 +27,8 @@ public class BaseController : MonoBehaviour
     private int characterNum = 0;
     public int CharNum { get { return characterNum; } }
 
+
+    bool isRiding = false;
 
     protected virtual void Awake()
     {
@@ -78,7 +77,14 @@ public class BaseController : MonoBehaviour
 
     private void Movment(Vector2 direction)
     {
-        direction = direction * statController.Speed;
+        if(isRiding)
+        {
+            direction = direction * statController.RideSpeed;
+        }
+        else
+        {
+            direction = direction * statController.Speed;
+        }
         if (knockbackDuration > 0.0f)
         {
             direction *= 0.2f;
@@ -96,6 +102,10 @@ public class BaseController : MonoBehaviour
         bool isLeft = Mathf.Abs(rotZ) > 90f;
 
         characterRenderer[num].flipX = isLeft;
+        if (characterRenderer.Length != 1) // Npc는 라이딩 없음
+        {
+            rideRenderer[0].flipX = isLeft;
+        }
 
         if (weaponPivot != null)
         {
@@ -123,5 +133,23 @@ public class BaseController : MonoBehaviour
         Debug.Log("CharNum 변경! : " + CharNum);
     }
 
+    void OnRide(InputValue inputValue)
+    {
+        if(inputValue.isPressed)
+        {
+            if (rideRenderer[0].gameObject.activeSelf)
+            {
+                characterRenderer[characterNum].transform.parent.position -= new Vector3(0, 0.5f, 0);
+                rideRenderer[0].gameObject.SetActive(false);
+                isRiding = false;
+            }
+            else
+            {
+                characterRenderer[characterNum].transform.parent.position += new Vector3(0,0.5f,0);
+                rideRenderer[0].gameObject.SetActive(true);
+                isRiding = true;
+            }
+        }
+    }
    
 }

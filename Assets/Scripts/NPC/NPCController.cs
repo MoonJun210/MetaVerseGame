@@ -52,18 +52,29 @@ public class NPCController : BaseController
         return (target.position - transform.position).normalized;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 6)
         {
-            target = collision.transform;
-            Vector2 direction = DirectionToTarget();
-            lookDirection = direction;
+            if (target != collision.transform)
+            {
+                target = collision.transform;
+            }
 
+         
             questionMark.SetActive(true);
 
             interactHandler.IsNPCTrigger = true;
             interactHandler.NPCType = npcType;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            Vector2 direction = DirectionToTarget();
+            lookDirection = direction;
         }
     }
 
