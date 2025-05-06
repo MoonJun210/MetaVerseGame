@@ -20,9 +20,9 @@ public class InventoryController : InitPlayer
 
     private void UpdateStat()
     {
-        hpText.text = statController.MaxHp.ToString();
-        speedText.text = statController.Speed.ToString("F1");
-        goldText.text = statController.Gold.ToString();
+        hpText.text = GameManager.instance.playerStatData.MaxHp.ToString();
+        speedText.text = GameManager.instance.playerStatData.Speed.ToString("F1");
+        goldText.text = GameManager.instance.playerStatData.Gold.ToString();
     }
 
     public void Plus_ChangeSprite()

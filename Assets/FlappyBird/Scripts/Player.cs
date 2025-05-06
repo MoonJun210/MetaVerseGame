@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
             return;
 
         Vector3 velocity = _rigidbody.velocity;
+        forwardSpeed = GameManager.instance.playerStatData.Speed;
         velocity.x = forwardSpeed;
 
         if (isFlap)

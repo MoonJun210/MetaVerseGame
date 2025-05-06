@@ -9,8 +9,7 @@ public class ShopController : InitPlayer
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI maxHpText;
 
-    int upgradeSpeedCnt = 0;
-    int upgradeMaxHpCnt = 0;
+
 
     private int[] upgradeGoldTable = { 10, 50, 100, 150, 200 };
 
@@ -22,64 +21,85 @@ public class ShopController : InitPlayer
 
     private void Start()
     {
+        UpdateUpgradeUI();
     }
 
     public void TryUpgradeSpeed()
     {
-        TryUpgrade(upgradeSpeedCnt, UpgradeType.Speed);
-        upgradeSpeedCnt++; 
+        TryUpgrade(UpgradeType.Speed);
     }
 
     public void TryUpgradeMaxHp()
     {
-        TryUpgrade(upgradeMaxHpCnt, UpgradeType.MaxHp);
-        upgradeMaxHpCnt++;
+        TryUpgrade(UpgradeType.MaxHp);
     }
 
-    public void TryUpgrade(int upgradeCount, UpgradeType type)
+    public void TryUpgrade(UpgradeType type)
     {
-        if (upgradeCount >= upgradeGoldTable.Length)
+        int count;
+        switch (type)
+        {
+            case UpgradeType.Speed:
+                count = GameManager.instance.playerStatData.SpeedUpgradeCount;
+                break;
+            case UpgradeType.MaxHp:
+                count = GameManager.instance.playerStatData.MaxHpUpgradeCount;
+                break;
+            default:
+                count = 0;
+                break;
+        }
+
+        if (count >= upgradeGoldTable.Length)
             return;
 
-        int cost = upgradeGoldTable[upgradeCount];
+        int cost = upgradeGoldTable[count];
 
-        if (statController.Gold < cost)
+        if (GameManager.instance.playerStatData.Gold < cost)
             return;
 
-        statController.Gold -= cost;
+        GameManager.instance.playerStatData.Gold -= cost;
 
         switch (type)
         {
             case UpgradeType.Speed:
-                statController.Speed += 0.2f;
-                if(upgradeCount + 1 >= upgradeGoldTable.Length)
-                {
-                    speedText.text = $"More Speed /\nMAX";
-
-                }
-                else
-                {
-                    speedText.text = $"More Speed /\n{upgradeGoldTable[upgradeCount + 1]}G";
-
-                }
+                GameManager.instance.playerStatData.Speed += 0.5f;
+                GameManager.instance.playerStatData.SpeedUpgradeCount++;
                 break;
             case UpgradeType.MaxHp:
-                statController.MaxHp += 20;
-                if (upgradeCount + 1 >= upgradeGoldTable.Length)
-                {
-                    maxHpText.text = $"More Hp /\nMAX";
-
-                }
-                else
-                {
-                    maxHpText.text = $"More Hp /\n{upgradeGoldTable[upgradeCount + 1]}G";
-
-                }
+                GameManager.instance.playerStatData.MaxHp += 20;
+                GameManager.instance.playerStatData.MaxHpUpgradeCount++;
                 break;
         }
 
         EventManager.Instance.TriggerEvent("UpdateStat");
-
+        UpdateUpgradeUI();
     }
+
+    public void UpdateUpgradeUI()
+    {
+        int speedCount = GameManager.instance.playerStatData.SpeedUpgradeCount;
+        int hpCount = GameManager.instance.playerStatData.MaxHpUpgradeCount;
+
+        if (speedCount >= upgradeGoldTable.Length)
+        {
+            speedText.text = "More Speed /\nMAX";
+
+        }
+        else
+        {
+            speedText.text = $"More Speed /\n{upgradeGoldTable[speedCount]}G";
+        }
+
+        if (hpCount >= upgradeGoldTable.Length)
+        {
+            maxHpText.text = "More Hp /\nMAX";
+        }
+        else
+        {
+            maxHpText.text = $"More Hp /\n{upgradeGoldTable[hpCount]}G";
+        }
+    }
+
 
 }

@@ -22,7 +22,7 @@ public class BaseController : MonoBehaviour
     private float knockbackDuration = 0.0f;
 
     protected AnimationHandler animationHandler;
-    protected StatController statController;
+    private InteractHandler _interactHandler;
 
     private int characterNum = 0;
     public int CharNum { get { return characterNum; } }
@@ -34,7 +34,7 @@ public class BaseController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         animationHandler = GetComponent<AnimationHandler>();
-        statController = GetComponent<StatController>();
+        _interactHandler = GetComponent<InteractHandler>();
 
         characterNum = 0;
 
@@ -77,13 +77,19 @@ public class BaseController : MonoBehaviour
 
     private void Movment(Vector2 direction)
     {
+        if(_interactHandler.IsConversation || _interactHandler == null)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            return;
+        }
+
         if(isRiding)
         {
-            direction = direction * statController.RideSpeed;
+            direction = direction * GameManager.instance.playerStatData.RideSpeed;
         }
         else
         {
-            direction = direction * statController.Speed;
+            direction = direction * GameManager.instance.playerStatData.Speed;
         }
         if (knockbackDuration > 0.0f)
         {

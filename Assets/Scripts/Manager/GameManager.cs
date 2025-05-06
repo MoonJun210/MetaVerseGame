@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject rankingPrefab;
     private GameObject player;
+
+    public StatData playerStatData;
 
     public Dictionary<int, MiniGameResult> miniGameResults = new();
 
@@ -26,6 +29,7 @@ public class GameManager : MonoBehaviour
         }
 
         instance = this;
+        playerStatData = new StatData();
         DontDestroyOnLoad(gameObject); // æ¿¿Ã πŸ≤ÓæÓµµ ∆ƒ±´µ«¡ˆ æ ¿Ω
     }
 
@@ -47,23 +51,47 @@ public class GameManager : MonoBehaviour
 
     public void SaveMiniGameResult(int gameId, MiniGameResult result)
     {
-        if(miniGameResults.TryGetValue(gameId, out MiniGameResult existResult))
+        string key = $"MiniGameResult_{gameId}";
+
+        if (miniGameResults.TryGetValue(gameId, out MiniGameResult existResult))
         {
-            if(result.Score > existResult.Score)
+            if (result.Score > existResult.Score)
             {
                 miniGameResults[gameId] = result;
+                PlayerPrefs.SetInt(key, result.Score);
             }
         }
         else
         {
             miniGameResults[gameId] = result;
+            PlayerPrefs.SetInt(key, result.Score);
         }
+
+        PlayerPrefs.Save(); // ¿˙¿Â
     }
+
 
     public MiniGameResult GetMiniGameResult(int gameId)
     {
-        return miniGameResults.ContainsKey(gameId) ? miniGameResults[gameId] : null;
+        if (miniGameResults.ContainsKey(gameId))
+            return miniGameResults[gameId];
+
+        string key = $"MiniGameResult_{gameId}";
+        if (PlayerPrefs.HasKey(key))
+        {
+            int savedScore = PlayerPrefs.GetInt(key);
+            MiniGameResult loaded = new MiniGameResult
+            {
+                MiniGameId = gameId,
+                Score = savedScore
+            };
+            miniGameResults[gameId] = loaded;
+            return loaded;
+        }
+
+        return null;
     }
+
 
     public void AddPlayerRankingPrefab(GameObject parent)
     {

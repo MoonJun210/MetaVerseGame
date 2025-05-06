@@ -6,7 +6,6 @@ using UnityEngine;
 public class InitPlayer : MonoBehaviour
 {
     protected BaseController baseController;
-    protected StatController statController;
 
     protected virtual void Awake()
     {
@@ -16,6 +15,5 @@ public class InitPlayer : MonoBehaviour
     private void OnPlayerSpawned(GameObject playerObj)
     {
         baseController = playerObj.GetComponent<BaseController>();
-        statController = playerObj.GetComponent<StatController>();
     }
 }
