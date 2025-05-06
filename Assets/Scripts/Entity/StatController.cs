@@ -8,6 +8,8 @@ public class StatController : MonoBehaviour
     private int gold = 10000;
     private float speed = 5.0f;
     private float rideSpeed = 10f;
+
+
     public int MaxHp
     {
         get => maxHp;
@@ -28,5 +30,6 @@ public class StatController : MonoBehaviour
         get => rideSpeed;
         set => rideSpeed = value;
     }
+
 
 }

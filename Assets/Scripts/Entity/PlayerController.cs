@@ -7,11 +7,18 @@ public class PlayerController : BaseController
 {
     private Camera camera;
     private InteractHandler interactHandler;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        camera = Camera.main;
+        interactHandler = GetComponent<InteractHandler>();
+    }
+
     protected override void Start()
     {
         base.Start();
-        camera = Camera.main;
-        interactHandler = GetComponent<InteractHandler>();
+     
     }
 
     protected override void HandleAction()

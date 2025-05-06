@@ -13,7 +13,7 @@ public class InteractHandler : MonoBehaviour
     public bool IsConversation { get; set; }
     public NPCType NPCType { get; set; }
 
-    private void Start()
+    private void Awake()
     {
         Init();
     }
@@ -54,6 +54,12 @@ public class InteractHandler : MonoBehaviour
                     break;
                 case NPCType.Inventory:
                     npcUIs[(int)NPCType.Inventory - 1].SetActive(true);
+                    break;
+                case NPCType.MiniGame:
+                    npcUIs[(int)NPCType.MiniGame - 1].SetActive(true);
+                    break;
+                case NPCType.Ranking:
+                    npcUIs[(int)NPCType.Ranking - 1].SetActive(true);
                     break;
                 default:
                     break;
