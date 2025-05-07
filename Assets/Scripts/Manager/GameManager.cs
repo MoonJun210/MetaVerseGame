@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         EventManager.Instance.TriggerEvent("InitCamera", player);
     }
 
-    public void SaveMiniGameResult(int gameId, MiniGameResult result)
+    public void SaveMiniGameResult(int gameId, MiniGameResult result) // MiniGameResult클래스를 활용하여 데이터 저장
     {
         string key = $"MiniGameResult_{gameId}";
 
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
 
     public MiniGameResult GetMiniGameResult(int gameId)
     {
-        if (miniGameResults.ContainsKey(gameId))
+        if (miniGameResults.ContainsKey(gameId)) // 게임을 껏다 다시 켰을때는 PlayerPrefs에 저장된 데이터를 사용
             return miniGameResults[gameId];
 
         string key = $"MiniGameResult_{gameId}";
