@@ -47,7 +47,10 @@ public class BaseController : MonoBehaviour
         {
             return;
         }
+
         EventManager.Instance.RegisterEvent<int>("ChangeSprite",ChangeSprite);
+        EventManager.Instance.RegisterEvent<Color>("ChangeColor", ChangeColor);
+
     }
 
     protected virtual void Start()
@@ -137,6 +140,19 @@ public class BaseController : MonoBehaviour
         characterRenderer[characterNum].gameObject.SetActive(true);
 
         Debug.Log("CharNum 변경! : " + CharNum);
+    }
+
+    public void ChangeColor(Color newColor)
+    {
+        foreach(SpriteRenderer sp in characterRenderer)
+        {
+            Debug.Log($"적용 대상: {sp.gameObject.name} / 현재 색상: {sp.color}");
+
+            sp.material.color = newColor;
+        }
+
+        Debug.Log("색상 변경! : " + newColor);
+
     }
 
     void OnRide(InputValue inputValue)

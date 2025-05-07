@@ -237,11 +237,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3027096411793331229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -373, y: 192.99997}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 23.2, y: -22.6}
   m_SizeDelta: {x: 40, y: 40}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &6426294244033478606
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -292,7 +292,6 @@ GameObject:
   - component: {fileID: 6164583878296647946}
   - component: {fileID: 4909995559584295531}
   - component: {fileID: -6781088955259566129}
-  - component: {fileID: 4977471686551110764}
   m_Layer: 0
   m_Name: NPC_1_Shop
   m_TagString: Untagged
@@ -407,18 +406,6 @@ MonoBehaviour:
   weaponPivot: {fileID: 0}
   questionMark: {fileID: 6193594729885134404}
   npcType: 1
---- !u!114 &4977471686551110764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4786338199434303205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ee724a562e57fb4a8ddcd7b87ade5ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4962078209332051456
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,11 +734,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3027096411793331229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -296.3, y: 192.99997}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 23.200012, y: -17.100006}
   m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &5512068971048908170
 CanvasRenderer:
   m_ObjectHideFlags: 0

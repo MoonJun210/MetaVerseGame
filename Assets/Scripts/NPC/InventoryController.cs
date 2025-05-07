@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryController : InitPlayer
 {
@@ -10,6 +11,11 @@ public class InventoryController : InitPlayer
     public TextMeshProUGUI hpText;
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI goldText;
+
+    public List<Color> colors = new List<Color>();
+    int num = 0;
+
+    public Image colorImg;
 
     protected override void Awake()
     {
@@ -39,6 +45,29 @@ public class InventoryController : InitPlayer
 
     }
 
+    public void Plus_ChangeColor()
+    {
+        if(num >= colors.Count-1)
+        {
+            return;
+        }
+        num++;
+        EventManager.Instance.TriggerEvent("ChangeColor", colors[num]);
+        ChangeCharColor(num);
+
+    }
+
+    public void Minus_ChangeColor()
+    {
+        if(num <= 0)
+        {
+            return;
+        }
+        num--;
+        EventManager.Instance.TriggerEvent("ChangeColor", colors[num]);
+        ChangeCharColor(num);
+    }
+
     void ChangeCharImgs(int num)
     {
         for(int i = 0; i< charImgs.Length; i++)
@@ -47,6 +76,11 @@ public class InventoryController : InitPlayer
         }
 
         charImgs[num].SetActive(true);
+    }
+
+    void ChangeCharColor(int num)
+    {
+        colorImg.color = colors[num];
     }
 
 }
